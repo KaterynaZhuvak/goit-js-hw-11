@@ -5,13 +5,8 @@ const form = document.querySelector('form');
 const input = form.elements.searchQuery;
 const list = document.querySelector('.gallery');
 const button = document.querySelector('.submitBtn');
-const target = document.querySelector('.js-guard');
+const loadBtn = document.querySelector('.load-more');
 let currentPage = 1;
-let options = {
-  root: null,
-  rootMargin: '300px',
-  threshold: 1.0,
-};
 
 function arePicturesPresent(container) {
   const pictures = container.querySelectorAll('.photo-card');
@@ -24,17 +19,34 @@ async function getGeneralMarkup(input) {
     const pictures = await getPhoto(input, currentPage);
     let valueOfPictures = currentPage * 40;
     list.insertAdjacentHTML('afterbegin', createMarkup(pictures.hits));
-    observer.observe(target);
     if (pictures.totalHits < valueOfPictures) {
+      loadBtn.classList.add('visually-hidden');
       console.log("We're sorry, but you've reached the end of search results.");
     }
-  } catch (error) {
+  } catch {
     console.error(error);
   }
 }
 
-button.addEventListener('click', event => {
+async function onLoad() {
+  const currentInput = input.value;
+  currentPage += 1;
+  let valueOfPictures = currentPage * 40;
+  try {
+    const pictures = await getPhoto(currentInput, currentPage);
+    list.insertAdjacentHTML('beforeend', createMarkup(pictures.hits));
+    if (pictures.totalHits < valueOfPictures) {
+      loadBtn.classList.add('visually-hidden');
+      console.log("We're sorry, but you've reached the end of search results.");
+    }
+  } catch {
+    console.error(error);
+  }
+}
+
+button.addEventListener('click', async event => {
   event.preventDefault();
+  loadBtn.classList.remove('visually-hidden');
   const picturesPresent = arePicturesPresent(list);
   if (input.value === '') {
     return console.log('please put down correct tag');
@@ -50,26 +62,4 @@ button.addEventListener('click', event => {
   }
 });
 
-function onLoad(entries, observer) {
-  entries.forEach(async entry => {
-    if (entry.isIntersecting) {
-      const currentInput = input.value;
-      currentPage += 1;
-      let valueOfPictures = currentPage * 40;
-      try {
-        const pictures = await getPhoto(currentInput, currentPage);
-        list.insertAdjacentHTML('beforeend', createMarkup(pictures.hits));
-        if (pictures.totalHits < valueOfPictures) {
-          observer.unobserve(target);
-          console.log(
-            "We're sorry, but you've reached the end of search results."
-          );
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  });
-}
-
-let observer = new IntersectionObserver(onLoad, options);
+loadBtn.addEventListener('click', onLoad);
