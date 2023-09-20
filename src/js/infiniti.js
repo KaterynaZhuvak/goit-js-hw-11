@@ -46,9 +46,11 @@ function buildMarkupAndCheckGallery(value) {
 function checkMarkupForSpaces(input) {
   const picturesPresent = arePicturesPresent(list);
   if (input === '' || input.includes(' ')) {
-    return Notiflix.Notify.warning('Please put down correct tag or eliminate spaces');
+    return Notiflix.Notify.warning(
+      'Please put down correct tag or eliminate spaces'
+    );
   } else {
-    buildMarkupAndCheckGallery(picturesPresent)
+    buildMarkupAndCheckGallery(picturesPresent);
   }
 }
 
@@ -61,16 +63,14 @@ function arePicturesPresent(container) {
 async function getGeneralMarkup(input) {
   try {
     const pictures = await getPhoto(input, currentPage);
+    let valueOfPictures = currentPage * 40;
     Notiflix.Notify.success(
       `Hooray! We found ${pictures.totalHits} images of ${input}!`
     );
-    let valueOfPictures = currentPage * 40;
+
     list.insertAdjacentHTML('afterbegin', createMarkup(pictures.hits));
     smoothScrol();
     observer.observe(target);
-    if (pictures.totalHits < valueOfPictures) {
-      Notiflix.Notify.info(`We found only ${pictures.totalHits} pictures`);
-    }
   } catch (error) {
     Notiflix.Notify.failure('Sorry, something went wrong!');
   }
@@ -91,7 +91,6 @@ function onLoad(entries, observer) {
         const pictures = await getPhoto(currentInput, currentPage);
         if (pictures.totalHits < valueOfPictures) {
           observer.unobserve(target);
-
           return Notiflix.Notify.info(
             "We're sorry, but you've reached the end of search results."
           );

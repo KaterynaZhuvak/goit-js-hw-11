@@ -1,5 +1,5 @@
 import { getPhoto } from './api';
-import { createMarkup, } from './markup';
+import { createMarkup } from './markup';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
@@ -41,9 +41,11 @@ function buildMarkupAndCheckGallery(value) {
 function checkMarkupForSpaces(input) {
   const picturesPresent = arePicturesPresent(list);
   if (input === '' || input.includes(' ')) {
-    return Notiflix.Notify.warning('Please put down correct tag or eliminate spaces');
+    return Notiflix.Notify.warning(
+      'Please put down correct tag or eliminate spaces'
+    );
   } else {
-    buildMarkupAndCheckGallery(picturesPresent)
+    buildMarkupAndCheckGallery(picturesPresent);
   }
 }
 
