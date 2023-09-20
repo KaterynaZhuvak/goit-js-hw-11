@@ -95,6 +95,7 @@ body {
   border-radius: 0 5px 5px 0;
   padding: 10px 15px;
   height: 38px;
+  margin-right: 120px;
 }
 
 .search-button svg {
@@ -102,6 +103,7 @@ body {
   width: 10px;
   height: 10px;
   cursor: pointer;
+  
 }
 
 .search-button:hover {

@@ -16,6 +16,10 @@ let options = {
   threshold: 1.0,
 };
 
+const lightbox = new SimpleLightbox('.photo-card a', {
+  animationSpeed: 250,
+});
+
 function smoothScrol() {
   const { height: cardHeight } = document
     .querySelector('.gallery')
@@ -63,12 +67,12 @@ function arePicturesPresent(container) {
 async function getGeneralMarkup(input) {
   try {
     const pictures = await getPhoto(input, currentPage);
-    let valueOfPictures = currentPage * 40;
     Notiflix.Notify.success(
       `Hooray! We found ${pictures.totalHits} images of ${input}!`
     );
 
     list.insertAdjacentHTML('afterbegin', createMarkup(pictures.hits));
+    lightbox.refresh();
     smoothScrol();
     observer.observe(target);
   } catch (error) {
@@ -96,6 +100,7 @@ function onLoad(entries, observer) {
           );
         }
         list.insertAdjacentHTML('beforeend', createMarkup(pictures.hits));
+        lightbox.refresh();
         smoothScrol();
       } catch (error) {
         loadBtn.classList.add('visually-hidden');
@@ -106,9 +111,3 @@ function onLoad(entries, observer) {
 }
 
 let observer = new IntersectionObserver(onLoad, options);
-
-const lightbox = new SimpleLightbox('.photo-card a', {
-  animationSpeed: 250,
-  captionPosition: 'bottom',
-  captionsData: 'alt',
-});

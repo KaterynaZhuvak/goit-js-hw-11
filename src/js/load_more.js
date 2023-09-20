@@ -7,9 +7,12 @@ import Notiflix from 'notiflix';
 const form = document.querySelector('form');
 const input = form.elements.searchQuery;
 const list = document.querySelector('.gallery');
-const button = document.querySelector('.submitBtn');
 const loadBtn = document.querySelector('.load-more');
 let currentPage = 1;
+
+const lightbox = new SimpleLightbox('.photo-card a', {
+  animationSpeed: 250,
+});
 
 function smoothScrol() {
   const { height: cardHeight } = document
@@ -57,8 +60,10 @@ async function getGeneralMarkup(input) {
       `Hooray! We found ${pictures.totalHits} images of ${input}!`
     );
     list.insertAdjacentHTML('afterbegin', createMarkup(pictures.hits));
+    lightbox.refresh();
     loadBtn.classList.remove('visually-hidden');
     smoothScrol();
+
     if (pictures.totalHits < valueOfPictures) {
       loadBtn.classList.add('visually-hidden');
     }
@@ -89,15 +94,9 @@ async function onLoad() {
   }
 }
 
-button.addEventListener('click', event => {
+form.addEventListener('submit', event => {
   event.preventDefault();
   checkMarkupForSpaces(input.value);
 });
 
 loadBtn.addEventListener('click', onLoad);
-
-const lightbox = new SimpleLightbox('.photo-card a', {
-  animationSpeed: 250,
-  captionPosition: 'bottom',
-  captionsData: 'alt',
-});
