@@ -11,6 +11,7 @@ axios.defaults.params = {
 
 async function getPhoto(input, page) {
   try {
+    
     const response = await axios.get('', {
       params: {
         page: page,

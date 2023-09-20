@@ -29,6 +29,31 @@ function smoothScrol() {
 
 function arePicturesPresent(container) {
   const pictures = container.querySelectorAll('.photo-card');
+  return pictures.length > 0;
+}
+
+function buildMarkupAndCheckGallery(value) {
+  if (value) {
+    list.innerHTML = '';
+    const currentInput = input.value;
+    getGeneralMarkup(currentInput);
+  } else {
+    const currentInput = input.value;
+    getGeneralMarkup(currentInput);
+  }
+}
+
+function checkMarkupForSpaces(input) {
+  const picturesPresent = arePicturesPresent(list);
+  if (input === '' || input.includes(' ')) {
+    return Notiflix.Notify.warning('Please put down correct tag or eliminate spaces');
+  } else {
+    buildMarkupAndCheckGallery(picturesPresent)
+  }
+}
+
+function arePicturesPresent(container) {
+  const pictures = container.querySelectorAll('.photo-card');
 
   return pictures.length > 0;
 }
@@ -53,19 +78,7 @@ async function getGeneralMarkup(input) {
 
 button.addEventListener('click', event => {
   event.preventDefault();
-  const picturesPresent = arePicturesPresent(list);
-  if (input.value === '') {
-    return Notiflix.Notify.warning('Please put down correct tag');
-  }
-
-  if (picturesPresent) {
-    list.innerHTML = '';
-    const currentInput = input.value;
-    getGeneralMarkup(currentInput);
-  } else {
-    const currentInput = input.value;
-    getGeneralMarkup(currentInput);
-  }
+  checkMarkupForSpaces(input.value);
 });
 
 function onLoad(entries, observer) {
