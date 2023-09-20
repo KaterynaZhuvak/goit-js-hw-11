@@ -10,8 +10,11 @@ function createMarkup(arr) {
         comments,
         downloads,
       }) =>
-        `<div class="photo-card">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+        `
+        <div class="photo-card">
+        <a href="${largeImageURL}">
+        <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
+        </a>
   <div class="info">
     <p class="info-item">
       <b>Likes: ${likes}</b>
@@ -25,8 +28,9 @@ function createMarkup(arr) {
     <p class="info-item">
       <b>Downloads: ${downloads}</b>
     </p>
-  </div>
-</div>`
+       </div>    
+</div>
+`
     )
     .join('');
 }

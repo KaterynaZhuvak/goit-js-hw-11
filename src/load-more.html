@@ -3,16 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Load more</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amita:wght@700&family=Inconsolata:wght@300&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.min.css" />
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <form class="search-form" id="search-form">
-        <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
-        <button type="submit" class="submitBtn">Search</button>
-    </form>
-    <div class="gallery"></div>
-    <button type="button" class="load-more visually-hidden">Load more</button>
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <p>inspire</p>
+            </div>
+<form class="search-form search-container" id="search-form">
+    <input class="search-input" type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
+    <button type="submit" class="submitBtn search-button">
+        <svg width="20" height="20" viewBox="0 0 24 24">
+        <use href="../img/symbol-defs.svg#icon-search" >
+        </use>
+    </svg></button>
+    
+</form>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="gallery gallery-container"></div>
+            <button type="button" class="load-more visually-hidden">Load more</button>
+        </div>
+    </main>
+    
+    
     <script src="./js/load_more.js" type="module"></script>
 </body>
 </html>
