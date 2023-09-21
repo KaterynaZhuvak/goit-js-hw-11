@@ -12,6 +12,7 @@ let currentPage = 1;
 
 const lightbox = new SimpleLightbox('.photo-card a', {
   animationSpeed: 250,
+  captionsData: 'alt'
 });
 
 function smoothScrol() {
@@ -54,6 +55,7 @@ function checkMarkupForSpaces(input) {
 
 async function getGeneralMarkup(input) {
   try {
+    currentPage = 1;
     const pictures = await getPhoto(input, currentPage);
     let valueOfPictures = currentPage * 40;
     Notiflix.Notify.success(

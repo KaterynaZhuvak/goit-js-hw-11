@@ -18,6 +18,7 @@ let options = {
 
 const lightbox = new SimpleLightbox('.photo-card a', {
   animationSpeed: 250,
+  captionsData: 'alt'
 });
 
 function smoothScrol() {
@@ -66,6 +67,7 @@ function arePicturesPresent(container) {
 
 async function getGeneralMarkup(input) {
   try {
+    currentPage = 1;
     const pictures = await getPhoto(input, currentPage);
     Notiflix.Notify.success(
       `Hooray! We found ${pictures.totalHits} images of ${input}!`
