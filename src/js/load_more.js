@@ -12,7 +12,7 @@ let currentPage = 1;
 
 const lightbox = new SimpleLightbox('.photo-card a', {
   animationSpeed: 250,
-  captionsData: 'alt'
+  captionsData: 'alt',
 });
 
 function smoothScrol() {
@@ -64,8 +64,6 @@ async function getGeneralMarkup(input) {
     list.insertAdjacentHTML('afterbegin', createMarkup(pictures.hits));
     lightbox.refresh();
     loadBtn.classList.remove('visually-hidden');
-    smoothScrol();
-
     if (pictures.totalHits < valueOfPictures) {
       loadBtn.classList.add('visually-hidden');
     }
@@ -81,15 +79,15 @@ async function onLoad() {
   let valueOfPictures = currentPage * 40;
   try {
     const pictures = await getPhoto(currentInput, currentPage);
-    if (pictures.totalHits < valueOfPictures) {
+    list.insertAdjacentHTML('beforeend', createMarkup(pictures.hits));
+    lightbox.refresh();
+    smoothScrol();
+    if (valueOfPictures % pictures.totalHits < 40) {
       loadBtn.classList.add('visually-hidden');
       return Notiflix.Notify.info(
         "We're sorry, but you've reached the end of search results."
       );
     }
-    list.insertAdjacentHTML('beforeend', createMarkup(pictures.hits));
-    lightbox.refresh();
-    smoothScrol();
   } catch (error) {
     loadBtn.classList.add('visually-hidden');
     Notiflix.Notify.failure('Sorry, something went wrong!');

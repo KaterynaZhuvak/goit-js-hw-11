@@ -18,7 +18,7 @@ let options = {
 
 const lightbox = new SimpleLightbox('.photo-card a', {
   animationSpeed: 250,
-  captionsData: 'alt'
+  captionsData: 'alt',
 });
 
 function smoothScrol() {
@@ -40,6 +40,7 @@ function arePicturesPresent(container) {
 function buildMarkupAndCheckGallery(value) {
   if (value) {
     list.innerHTML = '';
+    observer.unobserve(target);
     const currentInput = input.value;
     getGeneralMarkup(currentInput);
   } else {
@@ -72,17 +73,15 @@ async function getGeneralMarkup(input) {
     Notiflix.Notify.success(
       `Hooray! We found ${pictures.totalHits} images of ${input}!`
     );
-
     list.insertAdjacentHTML('afterbegin', createMarkup(pictures.hits));
     lightbox.refresh();
-    smoothScrol();
     observer.observe(target);
   } catch (error) {
     Notiflix.Notify.failure('Sorry, something went wrong!');
   }
 }
 
-button.addEventListener('click', event => {
+form.addEventListener('submit', event => {
   event.preventDefault();
   checkMarkupForSpaces(input.value);
 });
@@ -95,17 +94,16 @@ function onLoad(entries, observer) {
       let valueOfPictures = currentPage * 40;
       try {
         const pictures = await getPhoto(currentInput, currentPage);
-        if (pictures.totalHits < valueOfPictures) {
+        list.insertAdjacentHTML('beforeend', createMarkup(pictures.hits));
+        lightbox.refresh();
+        smoothScrol();
+        if (valueOfPictures % pictures.totalHits < 40) {
           observer.unobserve(target);
           return Notiflix.Notify.info(
             "We're sorry, but you've reached the end of search results."
           );
         }
-        list.insertAdjacentHTML('beforeend', createMarkup(pictures.hits));
-        lightbox.refresh();
-        smoothScrol();
       } catch (error) {
-        loadBtn.classList.add('visually-hidden');
         Notiflix.Notify.failure('Sorry, something went wrong!');
       }
     }
