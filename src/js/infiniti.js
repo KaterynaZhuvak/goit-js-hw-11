@@ -52,6 +52,7 @@ function buildMarkupAndCheckGallery(value) {
 function checkMarkupForSpaces(input) {
   const picturesPresent = arePicturesPresent(list);
   if (input === '' || input.includes(' ')) {
+    list.innerHTML = '';
     return Notiflix.Notify.warning(
       'Please put down correct tag or eliminate spaces'
     );
